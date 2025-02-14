@@ -34,42 +34,62 @@
         const yesButton = document.querySelector(".button:first-child");
         const noButton = document.querySelector(".button:last-child");
 
-        function moveNoButton() {
-            // Get container size
+        let fleeSpeed = 100; // Initial speed of fleeing
+        const fleeDistance = 500; // Distance from cursor to trigger flee
+
+        function fleeFromCursor(event) {
+            const buttonRect = noButton.getBoundingClientRect();
             const containerRect = container.getBoundingClientRect();
-            const buttonWidth = noButton.offsetWidth;
-            const buttonHeight = noButton.offsetHeight;
+            const cursorX = event.clientX;
+            const cursorY = event.clientY;
+            const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+            const buttonCenterY = buttonRect.top + buttonRect.height / 2;
 
-            // Generate random position **within the container boundaries**
-            const randomX = Math.random() * (containerRect.width - buttonWidth);
-            const randomY = Math.random() * (containerRect.height - buttonHeight);
+            const distanceX = cursorX - buttonCenterX;
+            const distanceY = cursorY - buttonCenterY;
+            const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
 
-            // Move the "No" button
-            noButton.style.position = "absolute";
-            noButton.style.left = `${randomX}px`;
-            noButton.style.top = `${randomY}px`;
+            if (distance < fleeDistance) {
+                let moveX = (distanceX / distance) * fleeSpeed;
+                let moveY = (distanceY / distance) * fleeSpeed;
+
+                // New position
+                let newX = buttonRect.left - moveX;
+                let newY = buttonRect.top - moveY;
+
+                // Ensure it stays within container boundaries
+                newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - buttonRect.width));
+                newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - buttonRect.height));
+
+                noButton.style.position = "absolute";
+                noButton.style.left = `${newX - containerRect.left}px`;
+                noButton.style.top = `${newY - containerRect.top}px`;
+
+                fleeSpeed += 10; // Increase speed when the mouse gets closer
+            } else {
+                fleeSpeed = 10; // Reset speed when cursor moves away
+            }
         }
 
         function showYippie() {
-            // Remove everything
             container.innerHTML = "";
 
-            // Create a new "Yippie!" text
             const yippieText = document.createElement("h1");
             yippieText.textContent = "Yippie! 🎉";
             yippieText.style.fontSize = "50px";
             yippieText.style.color = "#ff4d6d";
             yippieText.style.textAlign = "center";
 
-            // Append to container
             container.appendChild(yippieText);
         }
 
         // Attach event listeners
-        noButton.addEventListener("click", moveNoButton);
         yesButton.addEventListener("click", showYippie);
+        document.addEventListener("mousemove", fleeFromCursor);
     });
 </script>
+
+
 
 
 </html>
