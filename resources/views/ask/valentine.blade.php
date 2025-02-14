@@ -34,7 +34,7 @@
         const yesButton = document.querySelector(".button:first-child");
         const noButton = document.querySelector(".button:last-child");
 
-        let fleeSpeed = 100; // Initial speed of fleeing
+        let fleeSpeed = 20; // Initial speed of fleeing
         const fleeDistance = 500; // Distance from cursor to trigger flee
 
         function fleeFromCursor(event) {
@@ -66,8 +66,6 @@
                 noButton.style.top = `${newY - containerRect.top}px`;
 
                 fleeSpeed += 10; // Increase speed when the mouse gets closer
-            } else {
-                fleeSpeed = 10; // Reset speed when cursor moves away
             }
         }
 
