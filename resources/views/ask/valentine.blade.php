@@ -35,7 +35,7 @@
         const noButton = document.querySelector(".button:last-child");
 
         let fleeSpeed = 20; // Initial speed of fleeing
-        const fleeDistance = 500; // Distance from cursor to trigger flee
+        const fleeDistance = 200; // Distance from cursor to trigger flee
 
         function fleeFromCursor(event) {
             const buttonRect = noButton.getBoundingClientRect();
@@ -86,8 +86,5 @@
         document.addEventListener("mousemove", fleeFromCursor);
     });
 </script>
-
-
-
 
 </html>
